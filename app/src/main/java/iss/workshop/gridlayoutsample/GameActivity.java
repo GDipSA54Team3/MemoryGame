@@ -2,15 +2,22 @@ package iss.workshop.gridlayoutsample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
@@ -19,6 +26,17 @@ public class GameActivity extends AppCompatActivity {
     int matchCount = 0;
     int posIndex = -1;
     Handler handler = new Handler();
+
+    private Boolean lastImgIsFaceUp;
+    private Boolean clickable;
+    private int lastImgId;
+    private ImageView lastClicked;
+    private int matchedSets;
+    private List<ImageView> matchedBtns;
+    private int seconds;
+    private int minutes;
+    private Boolean started;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,66 +47,115 @@ public class GameActivity extends AppCompatActivity {
         //shuffle the incoming images in the array
         //shuffleArray(gridImages);
         //shuffle the positions
-        int[] pos = {0,1,2,3,4,5,0,1,2,3,4,5};
-        shuffleArray(pos);
+        int[] pos_ = {0, 1, 2, 3, 4, 5};
+
+        List<Integer> pos = new ArrayList<Integer>();
+        for (int p : pos_) {
+            pos.add(p);
+            pos.add(p);
+        }
+
+        Collections.shuffle(pos);
+
+        startSettings();
+
+        matchedBtns = new ArrayList<ImageView>() {
+        };
 
         setContentView(R.layout.activity_game);
         ImageAdapter imageAdapter = new ImageAdapter(this);
-        GridView gridView = (GridView)findViewById(R.id.gridView);
+        GridView gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(imageAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (posIndex < 0 ) {
-                    posIndex = position;
-                    imgView = (ImageView) view;
-
-                    ( (ImageView) view).setImageResource(R.drawable.half_open);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((ImageView) view).setImageResource(gridImages[pos[position]]);
-                        }
-                    }, 200);
-                }
-                else {
-                    if (posIndex == position) {
-
-                        ((ImageView) view).setImageResource(R.drawable.half_open);
-
+                ImageView im = (ImageView) view;
+                if (clickable && matchedSets < pos_.length && !matchedBtns.contains(im)) {
+                    im.setImageResource(gridImages[pos.get(position)]);
+                    // first flip
+                    if (!lastImgIsFaceUp) {
+                        started = true;
+                        lastImgIsFaceUp = true;
+                        lastImgId = gridImages[pos.get(position)];
+                        lastClicked = im;
+                        clickable = true;
+                        //if not match
+                    } else if (gridImages[pos.get(position)] != lastImgId) {
+                        clickable = false;
+                        // timer until user can click again
+                        final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ((ImageView) view).setImageResource(R.drawable.closed);
+                                // overturn mismatched pair
+                                im.setImageResource(R.drawable.closed);
+                                lastClicked.setImageResource(R.drawable.closed);
+                                lastImgIsFaceUp = false;
+                                clickable = true;
                             }
-                        }, 200);
-
-                    } else if (pos[posIndex] != pos[position]) {
-                        imgView.setImageResource(R.drawable.closed);
-                        Toast.makeText(GameActivity.this, "Does Not Match! Try again", Toast.LENGTH_LONG).show();
-                    } else {
-                        ((ImageView) view).setImageResource(gridImages[pos[position]]);
-                        matchCount++;
-                        if (matchCount == 6) {
-                            Toast.makeText(GameActivity.this, "You Win!", Toast.LENGTH_LONG).show();
-                        }
+                        }, 1000);
+                        //if match
+                    } else if (gridImages[pos.get(position)] == lastImgId && lastClicked != im) {
+                        lastImgIsFaceUp = false;
+                        matchedSets++;
+                        TextView textScore = findViewById(R.id.textMatches);
+                        @SuppressLint("DefaultLocale") String text = String.format(
+                                "%d of %d matched", matchedSets, pos_.length);
+                        textScore.setText(text);
+                        clickable = true;
+                        matchedBtns.add(im);
+                        matchedBtns.add(lastClicked);
+                        if (matchedSets == pos_.length)
+                            started = false;
                     }
-                    posIndex = -1;
+
                 }
             }
         });
+        runTimer();
     }
+
+    private void startSettings() {
+        lastImgIsFaceUp = false;
+        clickable = true;
+        matchedSets = 0;
+        seconds = 0;
+        minutes = 0;
+        started = false;
+    }
+
     // To shuffle the elements of the array
-    static void shuffleArray( int[] array)
-    {
-        Random random = new Random();
-        for (int i = array.length-1; i > 0; i--) {
-            // ing random index from 0 to i
-            int j = random.nextInt(i+1);
-            // Swap array[i] with the element at random index
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
+//    static void shuffleArray(int[] array) {
+//        Random random = new Random();
+//        for (int i = array.length - 1; i > 0; i--) {
+//            // ing random index from 0 to i
+//            int j = random.nextInt(i + 1);
+//            // Swap array[i] with the element at random index
+//            int temp = array[i];
+//            array[i] = array[j];
+//            array[j] = temp;
+//        }
+//    }
+
+    private void runTimer() {
+        TextView txtTime = findViewById(R.id.textTimer);
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (seconds == 60) {
+                    seconds = 0;
+                    minutes++;
+                }
+
+                @SuppressLint("DefaultLocale") String text = String.format(
+                        "%02d:%02d", minutes, seconds);
+                txtTime.setText(text);
+
+                if (started)
+                    seconds++;
+                handler.postDelayed(this, 1000);
+            }
+        });
     }
 }
