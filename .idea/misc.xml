@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/GridLayoutSample/app/src/main/res/layout/activity_game.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/GridLayoutSample/app/src/main/res/layout/activity_main.xml" value="0.22282608695652173" />
         <entry key="..\:/Android/GridLayoutSample/app/src/main/res/layout/cell.xml" value="0.1" />
       </map>

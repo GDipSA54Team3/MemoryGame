@@ -2,6 +2,7 @@ package iss.workshop.gridlayoutsample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
         Button findLink = findViewById(R.id.submit_btn);
         EditText urlText = findViewById(R.id.url_input);
         Button nextPage = findViewById(R.id.next_page_btn);
+
+        nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startGame();
+            }
+        });
+
 
         //find gridview
         GridView gridView = (GridView) findViewById(R.id.grid_view);
@@ -58,5 +67,20 @@ public class MainActivity extends AppCompatActivity {
             imageItems.add(new ImageItem(bitmap));
         }
         return imageItems;
+    }
+
+    public void startGame() {
+
+        int[] selectedImages = new int[] {
+                R.drawable.image_1,
+                R.drawable.image_2,
+                R.drawable.image_3,
+                R.drawable.image_4,
+                R.drawable.image_5,
+                R.drawable.image_6,
+        };
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        intent.putExtra("images", selectedImages);
+        startActivity(intent);
     }
 }
