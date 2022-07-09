@@ -45,10 +45,10 @@
 
 
         <Button
-            android:id="@+id/next_page_btn"
+            android:id="@+id/Restart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next Page"/>
+            android:text="Restart"/>
 
     </LinearLayout>
 
