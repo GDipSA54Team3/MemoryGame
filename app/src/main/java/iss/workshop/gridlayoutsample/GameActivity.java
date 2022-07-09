@@ -8,17 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -32,7 +29,7 @@ public class GameActivity extends AppCompatActivity {
     private int lastImgId;
     private ImageView lastClicked;
     private int matchedSets;
-    private List<ImageView> matchedBtns;
+    private List<ImageView> matchedViews;
     private int seconds;
     private int minutes;
     private Boolean started;
@@ -59,7 +56,7 @@ public class GameActivity extends AppCompatActivity {
 
         startSettings();
 
-        matchedBtns = new ArrayList<ImageView>() {
+        matchedViews = new ArrayList<ImageView>() {
         };
 
         setContentView(R.layout.activity_game);
@@ -67,10 +64,11 @@ public class GameActivity extends AppCompatActivity {
         GridView gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(imageAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ImageView im = (ImageView) view;
-                if (clickable && matchedSets < pos_.length && !matchedBtns.contains(im)) {
+                if (clickable && matchedSets < pos_.length && !matchedViews.contains(im)) {
                     im.setImageResource(gridImages[pos.get(position)]);
                     // first flip
                     if (!lastImgIsFaceUp) {
@@ -103,15 +101,29 @@ public class GameActivity extends AppCompatActivity {
                                 "%d of %d matched", matchedSets, pos_.length);
                         textScore.setText(text);
                         clickable = true;
-                        matchedBtns.add(im);
-                        matchedBtns.add(lastClicked);
-                        if (matchedSets == pos_.length)
+                        matchedViews.add(im);
+                        matchedViews.add(lastClicked);
+                        if (matchedSets == pos_.length) {
                             started = false;
+                            Intent intent = new Intent(GameActivity.this, PopUp.class);
+                            intent.putExtra("endTime", String.format(
+                                            "%02d:%02d", minutes, seconds));
+                            startActivity(intent);
+                        }
                     }
 
                 }
             }
         });
+
+        Button btn = findViewById(R.id.Restart);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recreate();
+            }
+        });
+
         runTimer();
     }
 
