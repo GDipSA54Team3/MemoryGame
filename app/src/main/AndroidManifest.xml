@@ -19,7 +19,7 @@
         <activity
             android:name=".PopUp"
             android:exported="false"
-            android:theme="@style/Theme.GridLayoutSample.Custom" />
+            android:theme="@style/PopUp.Custom" />
         <activity
             android:name=".GameActivity"
             android:exported="false" />

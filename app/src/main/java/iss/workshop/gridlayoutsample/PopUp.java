@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,14 +17,6 @@ public class PopUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_window);
-
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout((int)(width * 0.7), (int)(height * 0.3));
 
         Intent intent = getIntent();
         String endTime = intent.getStringExtra("endTime").toString();
@@ -44,6 +37,7 @@ public class PopUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PopUp.this, GameActivity.class);
+                intent.putExtra("images", getIntent().getSerializableExtra("images"));
                 startActivity(intent);
             }
         });

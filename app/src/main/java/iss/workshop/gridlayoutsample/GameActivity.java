@@ -110,6 +110,7 @@ public class GameActivity extends AppCompatActivity {
                             Intent intent = new Intent(GameActivity.this, PopUp.class);
                             intent.putExtra("endTime", String.format(
                                             "%02d:%02d", minutes, seconds));
+                            intent.putExtra("images", gridImages);
                             startActivity(intent);
                         }
                     }
