@@ -4,10 +4,12 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:id="@+id/bgcol">
 
     <ImageView
         android:id="@+id/image"
+        android:padding="5dp"
         android:layout_width="100dp"
         android:layout_height="100dp" />
 
