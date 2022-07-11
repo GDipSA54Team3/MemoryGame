@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageView lastClicked;
     private int matchedSets;
     private List<ImageView> matchedBtns;
-    private ArrayList<Integer> gridImages;
+    private int[] gridImages;
     private int seconds;
     private int minutes;
     private Boolean started;
@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        gridImages = (ArrayList<Integer>) intent.getSerializableExtra("images");
+        gridImages = intent.getIntArrayExtra("images");
 
         //shuffle the incoming images in the array
         //shuffleArray(gridImages);
@@ -69,16 +69,16 @@ public class GameActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ImageView im = (ImageView) view;
                 if (clickable && matchedSets < pos_.length && !matchedBtns.contains(im)) {
-                    im.setImageResource(gridImages.get(pos.get(position)));
+                    im.setImageResource(gridImages[pos.get(position)]);
                     // first flip
                     if (!lastImgIsFaceUp) {
                         started = true;
                         lastImgIsFaceUp = true;
-                        lastImgId = gridImages.get(pos.get(position));
+                        lastImgId = gridImages[pos.get(position)];
                         lastClicked = im;
                         clickable = true;
                         //if not match
-                    } else if (gridImages.get(pos.get(position)) != lastImgId) {
+                    } else if (gridImages[pos.get(position)] != lastImgId) {
                         clickable = false;
                         // timer until user can click again
                         final Handler handler = new Handler();
@@ -93,7 +93,7 @@ public class GameActivity extends AppCompatActivity {
                             }
                         }, 1000);
                         //if match
-                    } else if (gridImages.get(pos.get(position)) == lastImgId && lastClicked != im) {
+                    } else if (gridImages[pos.get(position)] == lastImgId && lastClicked != im) {
                         lastImgIsFaceUp = false;
                         matchedSets++;
                         TextView textScore = findViewById(R.id.textMatches);
