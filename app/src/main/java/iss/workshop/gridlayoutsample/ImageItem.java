@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 public class ImageItem {
     private Bitmap image;
     private boolean currentlySelected;
-    private Integer drawableTag;
+    private String drawableTag;
 
     public ImageItem(Bitmap image) {
         super();
@@ -32,11 +32,11 @@ public class ImageItem {
         }
     }
 
-    public void setDrawableTag(int drawableTag) {
+    public void setDrawableTag(String drawableTag) {
         this.drawableTag = drawableTag;
     }
 
-    public Integer getDrawableTag() {
+    public String getDrawableTag() {
         return drawableTag;
     }
 }

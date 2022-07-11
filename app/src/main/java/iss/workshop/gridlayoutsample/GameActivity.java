@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -26,14 +28,16 @@ public class GameActivity extends AppCompatActivity {
 
     private Boolean lastImgIsFaceUp;
     private Boolean clickable;
-    private Integer lastImgId;
+    private String lastImg;
     private ImageView lastClicked;
     private int matchedSets;
     private List<ImageView> matchedViews;
-    private ArrayList<Integer> gridImages;
+    private ArrayList<String> gridImages;
     private int seconds;
     private int minutes;
     private Boolean started;
+    private ArrayList<String> sourceOfImages;
+    private ArrayList<String> fileNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        gridImages = (ArrayList<Integer>) intent.getSerializableExtra("images");
+        gridImages = intent.getStringArrayListExtra("images");
 
         //shuffle the incoming images in the array
         //shuffleArray(gridImages);
@@ -69,18 +73,20 @@ public class GameActivity extends AppCompatActivity {
             @SuppressLint("DefaultLocale")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ImageView im = (ImageView) view;
-                if (clickable && matchedSets < pos_.length && !matchedViews.contains(im)) {
-                    im.setImageResource(gridImages.get(pos.get(position)));
+                ImageView currClick = (ImageView) view;
+                if (clickable && matchedSets < pos_.length && !matchedViews.contains(currClick)) {
+                    String currPath = gridImages.get(pos.get(position));
+                    Bitmap bitmap = BitmapFactory.decodeFile(currPath);
+                    currClick.setImageBitmap(bitmap);
                     // first flip
                     if (!lastImgIsFaceUp) {
                         started = true;
                         lastImgIsFaceUp = true;
-                        lastImgId = gridImages.get(pos.get(position));
-                        lastClicked = im;
+                        lastImg = currPath;
+                        lastClicked = currClick;
                         clickable = true;
                         //if not match
-                    } else if (gridImages.get(pos.get(position)) != lastImgId) {
+                    } else if (currPath != lastImg) {
                         clickable = false;
                         // timer until user can click again
                         final Handler handler = new Handler();
@@ -88,14 +94,14 @@ public class GameActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 // overturn mismatched pair
-                                im.setImageResource(R.drawable.closed);
+                                currClick.setImageResource(R.drawable.closed);
                                 lastClicked.setImageResource(R.drawable.closed);
                                 lastImgIsFaceUp = false;
                                 clickable = true;
                             }
                         }, 1000);
                         //if match
-                    } else if (gridImages.get(pos.get(position)) == lastImgId && lastClicked != im) {
+                    } else if (currPath == lastImg && lastClicked != currClick) {
                         lastImgIsFaceUp = false;
                         matchedSets++;
                         TextView textScore = findViewById(R.id.textMatches);
@@ -103,7 +109,7 @@ public class GameActivity extends AppCompatActivity {
                                 "%d of %d matched", matchedSets, pos_.length);
                         textScore.setText(text);
                         clickable = true;
-                        matchedViews.add(im);
+                        matchedViews.add(currClick);
                         matchedViews.add(lastClicked);
                         if (matchedSets == pos_.length) {
                             started = false;
@@ -138,19 +144,6 @@ public class GameActivity extends AppCompatActivity {
         minutes = 0;
         started = false;
     }
-
-    // To shuffle the elements of the array
-//    static void shuffleArray(int[] array) {
-//        Random random = new Random();
-//        for (int i = array.length - 1; i > 0; i--) {
-//            // ing random index from 0 to i
-//            int j = random.nextInt(i + 1);
-//            // Swap array[i] with the element at random index
-//            int temp = array[i];
-//            array[i] = array[j];
-//            array[j] = temp;
-//        }
-//    }
 
     private void runTimer() {
         TextView txtTime = findViewById(R.id.textTimer);
