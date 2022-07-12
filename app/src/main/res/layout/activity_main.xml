@@ -13,15 +13,18 @@
 
         <EditText
             android:id="@+id/url_input"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="https://stocksnap.io/"
-            android:layout_weight="6"/>
+            android:layout_weight="6"
+            />
 
         <Button
             android:id="@+id/submit_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="4"
             android:text="FETCH"/>
 
@@ -41,7 +44,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="2"
+        android:gravity="center"
         android:orientation="vertical">
 
 
@@ -50,13 +55,15 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
         <Button
             android:id="@+id/next_page_btn"
-            android:layout_width="match_parent"
+
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next Page"/>
+            android:padding="10dp"
+            android:text="Start Game" />
 
     </LinearLayout>
 
