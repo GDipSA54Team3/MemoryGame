@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Thread bkgdThread;
     private Button nextPage;
     private ArrayList<String> selectedImages;
+    private FindImageInURLLink async;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         findLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if async thread currently exists, end it
+                if (async != null){
+                    async.cancel(true);
+                }
+
                 //remove existing images to save storage space
                 removeOldImages();
 
@@ -93,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 urlString = urlText.getText().toString();
 
                 //jsoup code starts
-                new FindImageInURLLink().execute();
+                async = new FindImageInURLLink();
+                async.execute();
 
             }
         });
@@ -223,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
+            mProgressBar.setVisibility(View.GONE);
         }
 
         @Override
@@ -242,11 +250,9 @@ public class MainActivity extends AppCompatActivity {
                             gridView.setAdapter(gridAdapter);
 
                             //update progress bar
-                            if (mProgressBar.getProgress() >= 100){
-                                mProgressBar.setVisibility(View.GONE);
-                            } else {
-                                mProgressBar.setProgress(dummySource.size() * 5);
-                            }
+
+                            mProgressBar.setProgress(dummySource.size() * 5);
+
                         }
                     });
                 }
