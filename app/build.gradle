@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "iss.workshop.gridlayoutsample"
+        applicationId "iss.workshop.memorygame"
         minSdk 29
         targetSdk 32
         versionCode 1

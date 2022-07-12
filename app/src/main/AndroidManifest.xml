@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="iss.workshop.gridlayoutsample">
+    package="iss.workshop.memorygame">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,15 +17,15 @@
         android:theme="@style/Theme.GridLayoutSample"
         tools:targetApi="31">
         <activity
-            android:name=".PopUp"
+            android:name="iss.workshop.memorygame.PopUp"
             android:exported="false"
             android:theme="@style/PopUp.Custom" />
         <activity
-            android:name=".GameActivity"
+            android:name="iss.workshop.memorygame.GameActivity"
             android:label="   Memory Game"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="iss.workshop.memorygame.MainActivity"
             android:label="   Memory Game"
             android:exported="true">
             <intent-filter>
@@ -35,7 +35,7 @@
         </activity>
 
         <service
-            android:name=".DownloadService"
+            android:name="iss.workshop.memorygame.DownloadService"
             android:enabled="true"
             android:exported="true"/>
     </application>

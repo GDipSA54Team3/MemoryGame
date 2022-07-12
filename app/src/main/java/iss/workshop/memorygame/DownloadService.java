@@ -1,4 +1,4 @@
-package iss.workshop.gridlayoutsample;
+package iss.workshop.memorygame;
 
 import android.app.Service;
 import android.content.Intent;

@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GridLayoutSample"
+rootProject.name = "MemoryGame"
 include ':app'
