@@ -1,11 +1,14 @@
 package iss.workshop.gridlayoutsample;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -43,13 +46,15 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //setup action bar
+        ActionBar actionBar = getSupportActionBar();//
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.topbar);
+
         Intent intent = getIntent();
 
         gridImages = intent.getStringArrayListExtra("images");
 
-        //shuffle the incoming images in the array
-        //shuffleArray(gridImages);
-        //shuffle the positions
         int[] pos_ = {0, 1, 2, 3, 4, 5};
 
         List<Integer> pos = new ArrayList<Integer>();
@@ -135,7 +140,6 @@ public class GameActivity extends AppCompatActivity {
 
         runTimer();
     }
-
     private void startSettings() {
         lastImgIsFaceUp = false;
         clickable = true;
@@ -144,7 +148,6 @@ public class GameActivity extends AppCompatActivity {
         minutes = 0;
         started = false;
     }
-
     private void runTimer() {
         TextView txtTime = findViewById(R.id.textTimer);
         final Handler handler = new Handler();
@@ -155,7 +158,6 @@ public class GameActivity extends AppCompatActivity {
                     seconds = 0;
                     minutes++;
                 }
-
                 @SuppressLint("DefaultLocale") String text = String.format(
                         "%02d:%02d", minutes, seconds);
                 txtTime.setText(text);

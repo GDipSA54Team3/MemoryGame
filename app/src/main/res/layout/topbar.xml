@@ -7,8 +7,13 @@
         android:id="@+id/textTimer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Memory Game"
+        android:layout_weight="6"
+        android:drawableStart="@drawable/brain_icon"
+        android:fontFamily="cursive"
         android:gravity="center"
-        android:layout_weight="6"/>
+        android:text="Visio Memory"
+        android:textColor="#FFFFFF"
+        android:textScaleX="2"
+        android:textSize="26dp" />
 
 </LinearLayout>
