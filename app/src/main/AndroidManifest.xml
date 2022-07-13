@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="iss.workshop.memorygame">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -17,27 +17,31 @@
         android:theme="@style/Theme.GridLayoutSample"
         tools:targetApi="31">
         <activity
-            android:name="iss.workshop.memorygame.PopUp"
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PopUp"
             android:exported="false"
             android:theme="@style/PopUp.Custom" />
         <activity
-            android:name="iss.workshop.memorygame.GameActivity"
-            android:label="   Memory Game"
-            android:exported="false" />
+            android:name=".GameActivity"
+            android:exported="false"
+            android:label="   Memory Game" />
         <activity
-            android:name="iss.workshop.memorygame.MainActivity"
-            android:label="   Memory Game"
-            android:exported="true">
+            android:name=".SplashPage"
+            android:exported="true"
+            android:label="   Memory Game">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="iss.workshop.memorygame.DownloadService"
+            android:name=".DownloadService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>
