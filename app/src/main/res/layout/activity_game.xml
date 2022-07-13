@@ -16,6 +16,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="0 of 6 matches"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#f5580f"
             android:gravity="center"
             android:layout_weight="6"/>
 
@@ -23,6 +26,9 @@
             android:id="@+id/textTimer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="#f5580f"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:text="00:00"
             android:gravity="center"
             android:layout_weight="6"/>

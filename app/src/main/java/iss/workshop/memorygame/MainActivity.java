@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> sourceOfImages;
     private ArrayList<String> fileNames;
     private ProgressBar mProgressBar;
+    private TextView mProgressTxt;
     private final String IMAGE_DESTINATION_FOLDER = Environment.DIRECTORY_PICTURES;
     private Thread bkgdThread;
     private Button nextPage;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         urlText = (EditText) findViewById(R.id.url_input);
         mProgressBar = findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressTxt = findViewById(R.id.progressTxt);
         nextPage = findViewById(R.id.next_page_btn);
 
         //setting onclicklistener to FETCH button
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(0);
                 mProgressBar.setVisibility(View.VISIBLE);
+                mProgressTxt.setText("");
 
                 sourceOfImages = new ArrayList<String>();
                 fileNames = new ArrayList<String>();
@@ -114,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 startGame();
             }
         });
-
 
         //find gridview
         gridView = (GridView) findViewById(R.id.grid_view);
@@ -211,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
                             //doing the download
                             startDownloadService(sourceOfImages.get(counter), fileNames.get(counter));
 
+
+
                             //this is where the grid view updates
                             publishProgress();
 
@@ -226,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
@@ -250,17 +254,15 @@ public class MainActivity extends AppCompatActivity {
                             gridView.setAdapter(gridAdapter);
 
                             //update progress bar
-
                             mProgressBar.setProgress(dummySource.size() * 5);
-
+                            mProgressTxt.setText("Downloading "+ dummySource.size() + " of 20 images");
+                            updateProgressText(dummySource);
                         }
                     });
                 }
             }, 1000); //how many milliseconds to delay
-
         }
     }
-
 
     protected void startDownloadService(String url, String filename) {
         Intent intent = new Intent(this, DownloadService.class);
@@ -292,6 +294,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return imageItems;
+    }
+    public void updateProgressText(ArrayList<String> dummySource){
+        if(dummySource.size() == 20){
+            mProgressTxt.setText(getString(R.string.progressDone));
+        }
     }
 
     protected void removeOldImages() {
