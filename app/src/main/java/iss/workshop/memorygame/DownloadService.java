@@ -28,14 +28,11 @@ public class DownloadService extends Service {
                         Intent intent = new Intent();
                         intent.setAction("download_completed");
                         intent.putExtra("filename", filename);
-                        //sendBroadcast(intent);
                     }
                 }
             }).start();
         }
         return super.onStartCommand(intent, flags, startId);
-        // don't restart this task if killed by Android system
-        // return START_NOT_STICKY;
     }
 
     @Nullable
