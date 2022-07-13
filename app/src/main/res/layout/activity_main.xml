@@ -49,6 +49,15 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/progressTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Key in website URL and Start Downloading images!"
+            android:textSize="16sp"
+            android:textStyle="italic|bold"
+            android:textColor="#f5580f"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -59,10 +68,9 @@
 
         <Button
             android:id="@+id/next_page_btn"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Start Game" />
 
     </LinearLayout>

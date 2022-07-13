@@ -34,18 +34,18 @@
             android:id="@+id/PlayAgain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#f5580f"
             android:text="Play again"
-
             />
 
         <Button
             android:id="@+id/EndReturn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#f5580f"
             android:text="Return to start"
             />
 
     </LinearLayout>
-
 
 </RelativeLayout>
